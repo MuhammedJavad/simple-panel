@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Application\Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Persistence\Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.Toast" Version="4.1.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.6.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.5.1-beta.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
+    <PackageReference Include="OpenTelemetry" Version="1.6.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\IvSize.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\KeyDescriptor.Selector.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\KeyImporter.CNG.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\KeyImporter.Container.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\KeyImporter.PlainKey.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\KeyImporter.RandomKey.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\Provider.Selector.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\GenerationUpsert\Upsert.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\Key.Insert.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\List.Generation.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\List.Keys.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\CipherKey\List.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\Index.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\Provider\Insert.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CipherPanel\Provider\List.razor" />
+  </ItemGroup>
+
+</Project>

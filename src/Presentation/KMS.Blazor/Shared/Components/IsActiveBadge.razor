@@ -1,0 +1,10 @@
+﻿@{
+    var badgeColor = IsActive ? "bg-success" : "bg-danger";
+    var badgeText = IsActive ? "Active" : "Inactive";
+}
+<small class="badge rounded-pill ms-lg-2 @(badgeColor)">@badgeText</small>
+
+@code {
+    [Parameter]
+    public bool IsActive { get; set; }
+}

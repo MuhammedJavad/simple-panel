@@ -1,0 +1,134 @@
+@page "/vendor/insert"
+@page "/vendor/update/{id:guid}"
+@using Domain.Aggregates.UserManagement.ValueTypes
+@using Domain.Aggregates.VendorManagement.ValueObjects
+@using Domain.ApplicationServices.VendorManagement
+@using Domain.ApplicationServices.VendorManagement.Dto
+@using Humanizer
+@using Blazor.Extensions
+@attribute [Authorize(Policy = nameof(Policy.Lieutenant))]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@inject IVendorService Service
+
+<PageTitle>@(IsInUpdateMode ? "Update" : "Insert") Vendor</PageTitle>
+
+
+<EditForm class="container" Model="_model">
+    <DataAnnotationsValidator/>
+    <FormError @ref="_formError"/>
+    <div class="col-12 mb-3">
+        <label for="tenant" class="form-label">Gateway</label>
+        <select @bind="@_model.Tenant" id="tenant" class="form-control">
+            <option value="@VendorTenant.SnappExpress" selected>@VendorTenant.SnappExpress.Humanize()</option>
+            <option value="@VendorTenant.SnappFood">@VendorTenant.SnappFood.Humanize()</option>
+        </select>
+        <ValidationMessage For="() => _model.Tenant"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="vendor-guid" class="form-label">Guid</label>
+        <InputGuid @bind-Value="_model.VendorGuid" class="form-control" id="vendor-guid"/>
+        <ValidationMessage For="() => _model.VendorGuid"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="client-id" class="form-label">Client Id</label>
+        <InputText @bind-Value="_model.ClientId" class="form-control" id="client-id"/>
+        <ValidationMessage For="() => _model.ClientId"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="client-secret" class="form-label">Client Secret</label>
+        <InputText @bind-Value="_model.ClientSecret" class="form-control" id="client-secret"/>
+        <ValidationMessage For="() => _model.ClientSecret"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="username" class="form-label">Username</label>
+        <InputText @bind-Value="_model.UserName" class="form-control" id="username"/>
+        <ValidationMessage For="() => _model.UserName"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="password" class="form-label">Password</label>
+        <InputText @bind-Value="_model.Password" class="form-control" id="password"/>
+        <ValidationMessage For="() => _model.Password"></ValidationMessage>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="client-vendor-id" class="form-label">Vendor Id</label>
+        <InputNumber @bind-Value="_model.VendorId" class="form-control" id="client-vendor-id"/>
+        <ValidationMessage For="() => _model.VendorId"></ValidationMessage>
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-danger" type="button" @onclick="OnCanceled">Cancel</button>
+        <AsynchronousButton ClassName="btn btn-primary" OnValidSubmit="Submit">Save changes</AsynchronousButton>
+    </div>
+</EditForm>
+
+@code {
+    private FormError _formError;
+    private InsertVendorDto _model;
+    private bool IsInUpdateMode => Id != Guid.Empty;
+
+    public Upsert()
+    {
+        _model = InsertVendorDto.Empty;
+    }
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _model = await BuildVendorModel();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task<InsertVendorDto> BuildVendorModel()
+    {
+        if (!IsInUpdateMode) return InsertVendorDto.Empty;
+        var r = await Service.GetVendorById(Id);
+        if (r.IsOk)
+        {
+            return new InsertVendorDto
+            {
+                Tenant = r.Result.Tenant,
+                ClientId = r.Result.ClientId,
+                ClientSecret = r.Result.ClientSecret,
+                UserName = r.Result.UserName,
+                VendorId = r.Result.VendorId,
+                VendorGuid = r.Result.VendorGuid,
+                Password = r.Result.Password,
+            };
+        }
+
+        ToastService.ShowError(r.Message());
+        return InsertVendorDto.Empty;
+    }
+
+    private async Task Submit()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (!authState.TryGetCurrentUserId(out var userId))
+        {
+            ToastService.ShowError("You are not Logged in");
+            return;
+        }
+        _model.UserId = userId;
+        var result = IsInUpdateMode
+            ? await Service.UpdateVendor(new UpdateVendorDto(Id, _model))
+            : await Service.InsertVendor(_model);
+
+        if (result.IsOk)
+        {
+            NavigateToListPage();
+            return;
+        }
+        _formError.DisplayError(result);
+    }
+
+    private void OnCanceled() => NavigateToListPage();
+    private void NavigateToListPage() => NavigationManager.NavigateTo("vendor/list");
+}

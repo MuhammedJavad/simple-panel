@@ -1,0 +1,24 @@
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
+
+<PageTitle>POS Management System</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
+
+    <main>
+        <Navbar/>
+        <article class="content px-4">
+            @Body
+        </article>
+        <BlazoredToasts Position="ToastPosition.BottomRight"
+                        Timeout="10"
+                        IconType="IconType.Custom"
+                        ErrorIcon="oi oi-heart"
+                        InfoIcon="oi oi-heart"
+                        SuccessIcon="oi oi-heart"
+                        WarningIcon="oi oi-heart"/>
+    </main>
+</div>

@@ -1,0 +1,21 @@
+﻿@using Humanizer
+@inject NavigationManager Navigation
+
+
+<AuthorizeView>
+    <div class="top-row px-4">
+        <nav aria-label="breadcrumb" class="d-inline-block">
+            
+        </nav>
+        <div class="d-flex align-items-center justify-content-center">
+            <span>Hello, @context.User.Identity?.Name</span>
+            <form method="post" action="Account/LogOut">
+                <button type="submit" class="nav-link btn btn-link">Log out</button>
+            </form>
+        </div>
+    </div>
+</AuthorizeView>
+
+@code {
+
+}

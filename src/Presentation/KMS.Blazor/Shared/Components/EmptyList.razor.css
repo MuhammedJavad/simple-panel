@@ -1,0 +1,10 @@
+.empty {
+    border: 1px #d3d6d8 solid;
+    border-radius: .25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    color: #d3d6d8;
+    height: 100%;
+}

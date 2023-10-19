@@ -1,0 +1,33 @@
+﻿@using Domain.Aggregates.UserManagement.ValueTypes
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-uppercase" href="/">POS MS</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <AuthorizeView Policy="@nameof(Policy.Lieutenant)">
+                <NavLink class="nav-link" href="vendor/list" Match="NavLinkMatch.Prefix">
+                    <span class="oi oi-key" aria-hidden="true"></span> Vendor Guids
+                </NavLink>
+            </AuthorizeView>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool _collapseNavMenu = true;
+
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+}

@@ -1,0 +1,19 @@
+﻿@using Humanizer
+<a href="@GetHref()" class="link-info text-decoration-none" @onclick="OnClick">
+    <span class="oi oi-plus" aria-hidden="true"></span> @Text.Humanize(LetterCasing.Title)
+</a>
+
+
+@code {
+
+    [Parameter]
+    public string Href { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    private string GetHref() => string.IsNullOrWhiteSpace(Href) ? "javascript:void(0)" : Href;
+}

@@ -1,0 +1,48 @@
+﻿<button class="@ClassName"
+        @onclick="OnClick"
+        title="@Title"
+        disabled="@_isLoading">
+    @if (_isLoading)
+    {
+        <div class="spinner-border spinner-border-sm text-light" role="status"></div>
+    }
+    else
+    {
+        @ChildContent
+    }
+</button>
+
+@code {
+    private bool _isLoading;
+
+    [Parameter]
+    public string ClassName { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [CascadingParameter]
+    public EditContext? Context { get; set; } 
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    private async Task OnClick()
+    {
+        if (Context != null && !Context.Validate()) return;
+        _isLoading = true;
+        StateHasChanged();
+        try
+        {
+            await OnValidSubmit.InvokeAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

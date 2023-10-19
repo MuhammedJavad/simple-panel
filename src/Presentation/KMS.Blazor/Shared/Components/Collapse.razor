@@ -1,0 +1,24 @@
+<p>
+    <button class="btn btn-primary"
+            @onclick="() => _show = !_show"
+            type="button">
+        @Title
+    </button>
+</p>
+<div class="collapse mb-3 @(_show ? "show" : string.Empty)">
+    <div class="card card-body">
+        @ChildContent
+    </div>
+</div>
+
+
+@code {
+    private bool _show;
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+}

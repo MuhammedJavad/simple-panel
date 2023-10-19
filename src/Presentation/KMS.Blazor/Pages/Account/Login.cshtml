@@ -1,0 +1,70 @@
+﻿@page "/account/login"
+@model Blazor.Pages.Account.Login
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="~/css/bootstrap/bootstrap.min.css"/>
+    <title>Login</title>
+    <style>
+        .page{
+            height: 100vh;
+            background: #f5f2ea;
+        }
+        
+        .login-container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .login-box{
+            border-radius: 1.5rem;
+            background: #ffffff;
+            padding: 4rem 2rem;
+        }
+        
+        .login-box h1{
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="login-container">
+        <form method="post" class="login-box shadow" asp-page="Login2">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.ViewModel.ReturnUrl)
+            <div class="container text-center">
+                <h1>Agent Login</h1>
+                <p class="mb-5">Hey, Enter your details to get sign in to your account</p>
+            </div>
+            @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
+            <div class="form-floating mb-3">
+                @Html.TextBoxFor(model => model.ViewModel.Username, new { @class = "form-control" })
+                @Html.LabelFor(model => model.ViewModel.Username)
+                @Html.ValidationMessageFor(model => model.ViewModel.Username)
+            </div>
+            <div class="form-floating mb-3">
+                @Html.PasswordFor(model => model.ViewModel.Password, new { @class = "form-control" })
+                @Html.LabelFor(model => model.ViewModel.Password)
+                @Html.ValidationMessageFor(model => model.ViewModel.Password)
+            </div>
+            @* <div class="form-floating mb-5"> *@
+            @*     @Html.TextBoxFor(model => model.ViewModel.Domain, new { @class = "form-control" }) *@
+            @*     @Html.LabelFor(model => model.ViewModel.Domain) *@
+            @*     @Html.ValidationMessageFor(model => model.ViewModel.Domain) *@
+            @* </div> *@
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

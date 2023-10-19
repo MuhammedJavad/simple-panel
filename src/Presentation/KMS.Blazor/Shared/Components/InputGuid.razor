@@ -1,0 +1,22 @@
+@inherits InputBase<Guid>
+
+<input class="form-control" id="@Id" @bind="CurrentValue"/>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    
+    protected override bool TryParseValueFromString(
+        string? value, 
+        out Guid result, 
+        out string? validationErrorMessage)
+    {
+        if (!Guid.TryParse(value, out result))
+        {
+            validationErrorMessage = "Can input value is incorrect";
+            return false;
+        }
+        validationErrorMessage = string.Empty;
+        return true;
+    }
+
+}

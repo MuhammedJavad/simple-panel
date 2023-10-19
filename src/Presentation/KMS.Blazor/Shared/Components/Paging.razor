@@ -1,0 +1,41 @@
+﻿@using Domain.Common.Types
+@if (Pagination is { NeedToShow: true })
+{
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (Pagination.HasPrev)
+            {
+                <li class="page-item">
+                    <a role="button" class="page-link" href="javascript:void(0)" @onclick="() => Goto(Pagination.CurrentPage - 2)">Previous</a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">@Pagination.CurrentPage</a>
+            </li>
+            @if (Pagination.HasNext)
+            {
+                <li class="page-item">
+                    <a role="button" class="page-link" href="javascript:void(0)" @onclick="() => Goto(Pagination.CurrentPage)">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@code {
+
+    [Parameter]
+    public IPaging? Pagination { get; set; }
+
+    [Parameter]
+    public EventCallback OnNewPage { get; set; }
+
+    private async Task Goto(int index)
+    {
+        Pagination!.SetPage(index);
+        await Pagination.MoveNextAsync();
+        StateHasChanged();
+        await OnNewPage.InvokeAsync();
+    }
+
+}
